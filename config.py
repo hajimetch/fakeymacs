@@ -196,7 +196,7 @@ def configure(keymap):
     not_clipboard_target = ["EXCEL.EXE"]  # Excel
 
     # 日本語キーボードかどうかを指定する（True: 日本語キーボード、False: 英語キーボード）
-    is_japanese_keyboard = True
+    is_japanese_keyboard = False  # True
 
     # 左右どちらの Ctrlキーを使うかを指定する（"L": 左、"R": 右）
     side_of_ctrl_key = "L"
@@ -223,8 +223,8 @@ def configure(keymap):
     use_emacs_shift_mode = False
 
     # IME を切り替えるキーを指定する（複数指定可）
-    # toggle_input_method_key = ["C-Yen"]
-    toggle_input_method_key = ["C-Yen", "C-o"]
+    # toggle_input_method_key = ["C-Yen", "C-o"]
+    toggle_input_method_key = ["C-Yen"]
 
     # C-iキーを Tabキーとして使うかどうかを指定する（True: 使う、False: 使わない）
     use_ctrl_i_as_tab = True
@@ -244,10 +244,10 @@ def configure(keymap):
     other_window_key = "A-o"
 
     # クリップボードリストを起動するキーを指定する
-    clipboardList_key = "A-y"
+    clipboardList_key = None  # "A-y"
 
     # ランチャーリストを起動するキーを指定する
-    lancherList_key = "A-l"
+    lancherList_key = None  # "A-l"
 
     # アクティブウィンドウを切り替えるキーの組み合わせ（前、後 の順）を指定する（複数指定可）
     # （内部で A-Tab による切り替えを行っているため、設定するキーは Altキーとの組み合わせとしてください）
@@ -260,32 +260,40 @@ def configure(keymap):
     # アクティブウィンドウをディスプレイ間で移動するキーの組み合わせ（前、後 の順）を指定する（複数指定可）
     # （other_window_key に割り当てている A-o との連係した利用を想定し、A-S-o も割り当てています）
     # （デフォルトキーは、["W-S-Left", "W-S-Right"]）
-    # window_movement_key = None # Single display
-    window_movement_key = [["A-S-b", "A-S-f"], ["A-S-Left", "A-S-Right"],
-                           [None, "A-S-o"]]  # Multi-display
+    window_movement_key = None  # Single display
+    # window_movement_key = [["A-S-b", "A-S-f"], ["A-S-Left", "A-S-Right"],
+    #                        [None, "A-S-o"]]  # Multi-display
 
     # ウィンドウを最小化、リストアするキーの組み合わせ（リストア、最小化 の順）を指定する（複数指定可）
-    # window_minimize_key = None
-    window_minimize_key = [["A-r", "A-m"]]
+    window_minimize_key = None
+    # window_minimize_key = [["A-r", "A-m"]]
 
     # 仮想デスクトップを切り替えるキーの組み合わせ（前、後 の順）を指定する（複数指定可）
     # （デフォルトキーは、["W-C-Left", "W-C-Right"]）
     # desktop_switching_key = None # for Windows 7 or 8.1
-    desktop_switching_key = [["A-C-b", "A-C-f"],
-                             ["A-C-Left", "A-C-Right"]]  # for Windows 10
+    desktop_switching_key = [  # ["A-C-b", "A-C-f"],
+        ["W-C-Left", "W-C-Right"]
+    ]  # for Windows 10
+
+    # 仮想デスクトップを追加・削除するキーの組み合わせ（追加、削除 の順）を指定する（複数指定可）
+    # custom.
+    desktop_revising_key = [["W-C-Plus", "W-C-Minus"]]
+
+    # タスクビューの表示を切り替えるキーを指定する
+    # custom.
+    toggle_taskview_key = ["W-C-Up", "W-C-Down"]
 
     # IME の「単語登録」プログラムを起動するキーを指定する
     # word_register_key = None
     word_register_key = "C-CloseBracket"
 
     # IME の「単語登録」プログラムとそのパラメータを指定する（for Google日本語入力）
-    # word_register_name = r"C:\Program Files\Google\Google Japanese Input\GoogleIMEJaTool.exe"
-    word_register_name = r"C:\Program Files (x86)\Google\Google Japanese Input\GoogleIMEJaTool.exe"
-    word_register_param = "--mode=word_register_dialog"
+    # word_register_name = r"C:\Program Files (x86)\Google\Google Japanese Input\GoogleIMEJaTool.exe"
+    # word_register_param = "--mode=word_register_dialog"
 
     # IME の「単語登録」プログラムとそのパラメータを指定する（for MS-IME）
-    # word_register_name = r"C:\Windows\System32\IME\IMEJP\IMJPDCT.EXE"
-    # word_register_param = ""
+    word_register_name = r"C:\Windows\System32\IME\IMEJP\IMJPDCT.EXE"
+    word_register_param = ""
 
     # shell_command 関数で起動するアプリケーションソフトを指定する
     # （パスが通っていない場所にあるコマンドは、絶対パスで指定してください）
@@ -305,6 +313,8 @@ def configure(keymap):
     fakeymacs = Fakeymacs()
 
     fakeymacs.last_window = None
+
+    keymap_global = keymap.defineWindowKeymap()  # custom.
 
     def is_emacs_target(window):
         if window != fakeymacs.last_window:
@@ -411,12 +421,12 @@ def configure(keymap):
 
         if not fakeymacs.is_playing_kmacro:
             if ime_status:
-                message = "[あ]"
+                message = "あ"  # "[あ]"
             else:
-                message = "[A]"
+                message = " A"  # "[A]"
 
             # IME の状態をバルーンヘルプで表示する
-            keymap.popBalloon("ime_status", message, 500)
+            keymap.popBalloon("ime_status", message, 1500)  # 500
 
         delay(0.1)
 
@@ -483,6 +493,16 @@ def configure(keymap):
         if (checkWindow("sakura.exe", "EditorClient") or  # Sakura Editor
                 checkWindow("sakura.exe", "SakuraView166")):  # Sakura Editor
             self_insert_command("C-h")()
+
+    #
+    # The following is custom.
+    #
+
+    def select_backward_word():
+        self_insert_command("C-S-Left")()
+
+    def select_forward_word():
+        self_insert_command("C-S-Right")()
 
     ##################################################
     ## カット / コピー / 削除 / アンドゥ
@@ -642,6 +662,31 @@ def configure(keymap):
                 wnd.getLastActivePopup().setForeground()
                 break
 
+    #
+    # The following is custom.
+    #
+
+    def quit_app():
+        self_insert_command("A-F4")()
+
+    def print_buffer():
+        self_insert_command("C-p")()
+
+    def new_window():
+        self_insert_command("C-n")()
+
+    def new_tab():
+        self_insert_command("C-t")()
+
+    def action_center():
+        self_insert_command("W-a")()
+
+    def show_desktop():
+        self_insert_command("W-d")()
+
+    def start_menu():
+        self_insert_command("C-Esc")()
+
     ##################################################
     ## 文字列検索 / 置換
     ##################################################
@@ -734,6 +779,19 @@ def configure(keymap):
             fakeymacs.is_playing_kmacro = False
 
         keymap.delayedCall(callKmacro, 0)
+
+    #
+    # The following is custom.
+    #
+
+    def bold_font():
+        self_insert_command("C-b")()
+
+    def italic_font():
+        self_insert_command("C-i")()
+
+    def underline_font():
+        self_insert_command("C-u")()
 
     ##################################################
     ## その他
@@ -1276,13 +1334,27 @@ def configure(keymap):
         reset_search(
             reset_undo(reset_counter(mark(repeat(forward_char), True)))))
     define_key(
-        keymap_emacs, "C-Left",
+        keymap_emacs,
+        "M-Left",  # "C-Left"
         reset_search(
             reset_undo(reset_counter(mark(repeat(backward_word), False)))))
     define_key(
-        keymap_emacs, "C-Right",
+        keymap_emacs,
+        "M-Right",  # "C-Right"
         reset_search(
             reset_undo(reset_counter(mark(repeat(forward_word), True)))))
+    # custom.
+    define_key(
+        keymap_emacs, "M-S-Left",
+        reset_search(
+            reset_undo(
+                reset_counter(mark(repeat(select_backward_word), False)))))
+    # custom.
+    define_key(
+        keymap_emacs, "M-S-Right",
+        reset_search(
+            reset_undo(reset_counter(mark(repeat(select_forward_word),
+                                          True)))))
     define_key(
         keymap_emacs, "Up",
         reset_search(
@@ -1355,7 +1427,8 @@ def configure(keymap):
         reset_search(
             reset_undo(reset_counter(reset_mark(repeat2(delete_char))))))
     define_key(
-        keymap_emacs, "C-Back",
+        keymap_emacs,
+        "M-Back",  # "C-Back"
         reset_search(
             reset_undo(reset_counter(reset_mark(repeat3(
                 backward_kill_word))))))
@@ -1455,6 +1528,55 @@ def configure(keymap):
             keymap_emacs, "C-i",
             reset_undo(
                 reset_counter(reset_mark(repeat(indent_for_tab_command)))))
+
+    #
+    # The following is custom.
+    #
+
+    define_key(
+        keymap_emacs, "W-s",
+        reset_search(reset_undo(reset_counter(reset_mark(save_buffer)))))
+    define_key(
+        keymap_emacs, "W-x",
+        reset_search(reset_undo(reset_counter(reset_mark(kill_region)))))
+    define_key(
+        keymap_emacs, "W-c",
+        reset_search(reset_undo(reset_counter(reset_mark(kill_ring_save)))))
+    define_key(
+        keymap_emacs, "W-v",
+        reset_search(reset_undo(reset_counter(reset_mark(repeat(yank))))))
+    define_key(keymap_emacs, "W-z",
+               reset_search(reset_counter(reset_mark(undo))))
+    define_key(keymap_emacs, "W-a",
+               reset_search(reset_undo(reset_counter(mark_whole_buffer))))
+    define_key(
+        keymap_emacs, "W-p",
+        reset_search(reset_undo(reset_counter(reset_mark(print_buffer)))))
+    define_key(keymap_emacs, "W-n",
+               reset_search(reset_undo(reset_counter(reset_mark(new_window)))))
+    define_key(keymap_emacs, "W-t",
+               reset_search(reset_undo(reset_counter(reset_mark(new_tab)))))
+    define_key(keymap_emacs, "W-f",
+               reset_undo(reset_counter(reset_mark(isearch_forward))))
+    define_key(keymap_emacs, "W-b",
+               reset_search(reset_undo(reset_counter(reset_mark(bold_font)))))
+    define_key(
+        keymap_emacs, "W-i",
+        reset_search(reset_undo(reset_counter(reset_mark(italic_font)))))
+    define_key(
+        keymap_emacs, "W-u",
+        reset_search(reset_undo(reset_counter(reset_mark(underline_font)))))
+    define_key(
+        keymap_global, "W-C-f12",
+        reset_search(reset_undo(reset_counter(reset_mark(action_center)))))
+    define_key(
+        keymap_global, "W-C-f11",
+        reset_search(reset_undo(reset_counter(reset_mark(show_desktop)))))
+    define_key(keymap_global, "W-q",
+               reset_search(reset_undo(reset_counter(reset_mark(quit_app)))))
+    define_key(
+        keymap_emacs, "W-w",
+        reset_search(reset_undo(reset_counter(reset_mark(kill_buffer)))))
 
     ## 「IME の切り替え」のキー設定（上書きされないように最後に設定する）
     if toggle_input_method_key:
@@ -1573,7 +1695,8 @@ def configure(keymap):
                 if emacs_ime_mode_balloon_message:
                     if fakeymacs.ei_last_window:
                         keymap.popBalloon("emacs_ime_mode",
-                                          emacs_ime_mode_balloon_message)
+                                          emacs_ime_mode_balloon_message,
+                                          1500)  # custom.
                     else:
                         keymap.closeBalloon("emacs_ime_mode")
                 else:
@@ -1582,7 +1705,8 @@ def configure(keymap):
                             message = "[IME]"
                         else:
                             message = "[main]"
-                        keymap.popBalloon("emacs_ime_mode", message, 500)
+                        keymap.popBalloon("emacs_ime_mode", message,
+                                          1500)  # 500
 
         ##################################################
         ## キーバインド（emacs日本語入力モード用）
@@ -1675,8 +1799,6 @@ def configure(keymap):
     ####################################################################################################
     ## デスクトップの設定
     ####################################################################################################
-
-    keymap_global = keymap.defineWindowKeymap()
 
     ##################################################
     ## ウィンドウ操作（デスクトップ用）
@@ -1771,6 +1893,19 @@ def configure(keymap):
                 wnd.restore()
                 break
 
+    #
+    # The following is custom.
+    #
+
+    def toggle_taskview():
+        self_insert_command("W-Tab")()
+
+    def append_desktop():
+        self_insert_command("W-C-D")()
+
+    def delete_desktop():
+        self_insert_command("W-C-f4")()
+
     ##################################################
     ## キーバインド（デスクトップ用）
     ##################################################
@@ -1826,6 +1961,28 @@ def configure(keymap):
                 keymap_global, next_key,
                 reset_search(
                     reset_undo(reset_counter(reset_mark(next_desktop)))))
+
+    # 仮想デスクトップの追加・削除
+    # custom.
+    if desktop_revising_key:
+        for append_key, delete_key in desktop_revising_key:
+            define_key(
+                keymap_global, append_key,
+                reset_search(
+                    reset_undo(reset_counter(reset_mark(append_desktop)))))
+            define_key(
+                keymap_global, delete_key,
+                reset_search(
+                    reset_undo(reset_counter(reset_mark(delete_desktop)))))
+
+    # タスクビューの表示の切り替え
+    # custom.
+    if toggle_taskview_key:
+        for key in toggle_taskview_key:
+            define_key(
+                keymap_global, key,
+                reset_search(
+                    reset_undo(reset_counter(reset_mark(toggle_taskview)))))
 
     # IME の「単語登録」プログラムの起動
     define_key(keymap_global, word_register_key,
@@ -1997,7 +2154,7 @@ def configure(keymap):
     ####################################################################################################
     ## クリップボードリストの設定
     ####################################################################################################
-    if 1:
+    if 0:  # 1
         # クリップボードリストを利用するための設定です。クリップボードリストは clipboardList_key 変数で
         # 設定したキーの押下により起動します。クリップボードリストを開いた後、C-f（→）や C-b（←）
         # キーを入力することで画面を切り替えることができます。
@@ -2055,7 +2212,7 @@ def configure(keymap):
     ####################################################################################################
     ## ランチャーリストの設定
     ####################################################################################################
-    if 1:
+    if 0:  # 1
         # ランチャー用のリストを利用するための設定です。ランチャーリストは lancherList_key 変数で
         # 設定したキーの押下により起動します。ランチャーリストを開いた後、C-f（→）や C-b（←）
         # キーを入力することで画面を切り替えることができます。
@@ -2217,7 +2374,7 @@ def configure(keymap):
     ####################################################################################################
     ## Excel の場合、C-Enter に F2（セル編集モード移行）を割り当てる（オプション）
     ####################################################################################################
-    if 1:
+    if 0:  # 1
         keymap_excel = keymap.defineWindowKeymap(class_name="EXCEL*")
 
         # C-Enter 押下で、「セル編集モード」に移行する
@@ -2228,9 +2385,9 @@ def configure(keymap):
                     reset_counter(reset_mark(self_insert_command("F2"))))))
 
     ####################################################################################################
-    ## Emacs の場合、IME 切り替え用のキーを C-\ に置き換える（オプション）
+    ## Emacs の場合、IME 切り替え用のキーを置き換える（オプション）
     ####################################################################################################
-    if 0:
+    if 1:  # 0
         # emacs で mozc を利用する際に Windows の IME の切換えキーを mozc の切り替えキーとして
         # 機能させるための設定です。初期設定では NTEmacs（gnupack 含む）と Windows の Xサーバで動く
         # emacs を指定しています。
@@ -2265,3 +2422,8 @@ def configure(keymap):
             "C-Yen")  # [半角／全角] キー
         keymap_real_emacs["A-(25)"] = keymap.InputKeyCommand(
             "C-Yen")  # Alt-` キー
+
+        # Emacs では、MS-IME を切り替えない
+        # custom.
+        keymap_real_emacs["C-S-j"] = keymap.InputKeyCommand("Shift")
+        keymap_real_emacs["C-S-Semicolon"] = keymap.InputKeyCommand("Shift")
