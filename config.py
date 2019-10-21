@@ -1536,6 +1536,8 @@ def configure(keymap):
     define_key(
         keymap_emacs, "W-s",
         reset_search(reset_undo(reset_counter(reset_mark(save_buffer)))))
+    define_key(keymap_emacs, "W-o",
+               reset_search(reset_undo(reset_counter(reset_mark(find_file)))))
     define_key(
         keymap_emacs, "W-x",
         reset_search(reset_undo(reset_counter(reset_mark(kill_region)))))
