@@ -224,7 +224,7 @@ def configure(keymap):
 
     # IME を切り替えるキーを指定する（複数指定可）
     # toggle_input_method_key = ["C-Yen", "C-o"]
-    toggle_input_method_key = ["C-Yen"]
+    toggle_input_method_key = []  # ["C-Yen"]
 
     # C-iキーを Tabキーとして使うかどうかを指定する（True: 使う、False: 使わない）
     use_ctrl_i_as_tab = True
@@ -2386,7 +2386,7 @@ def configure(keymap):
     ####################################################################################################
     ## Emacs の場合、IME 切り替え用のキーを置き換える（オプション）
     ####################################################################################################
-    if 1:  # 0
+    if 0:
         # emacs で mozc を利用する際に Windows の IME の切換えキーを mozc の切り替えキーとして
         # 機能させるための設定です。初期設定では NTEmacs（gnupack 含む）と Windows の Xサーバで動く
         # emacs を指定しています。
@@ -2421,8 +2421,3 @@ def configure(keymap):
             "C-Yen")  # [半角／全角] キー
         keymap_real_emacs["A-(25)"] = keymap.InputKeyCommand(
             "C-Yen")  # Alt-` キー
-
-        # Emacs では、MS-IME を切り替えない
-        # custom.
-        keymap_real_emacs["C-S-j"] = keymap.InputKeyCommand("Shift")
-        keymap_real_emacs["C-S-Semicolon"] = keymap.InputKeyCommand("Shift")
