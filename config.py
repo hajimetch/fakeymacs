@@ -223,8 +223,8 @@ def configure(keymap):
     use_emacs_shift_mode = False
 
     # IME を切り替えるキーを指定する（複数指定可）
-    # toggle_input_method_key = ["C-Yen", "C-o"]
-    toggle_input_method_key = []  # ["C-Yen"]
+    # toggle_input_method_key = ["C-Yen"]
+    toggle_input_method_key = []  # ["C-Yen", "C-o"]
 
     # C-iキーを Tabキーとして使うかどうかを指定する（True: 使う、False: 使わない）
     use_ctrl_i_as_tab = True
@@ -2384,7 +2384,7 @@ def configure(keymap):
                     reset_counter(reset_mark(self_insert_command("F2"))))))
 
     ####################################################################################################
-    ## Emacs の場合、IME 切り替え用のキーを置き換える（オプション）
+    ## Emacs の場合、IME 切り替え用のキーを C-\ に置き換える（オプション）
     ####################################################################################################
     if 0:
         # emacs で mozc を利用する際に Windows の IME の切換えキーを mozc の切り替えキーとして
@@ -2421,3 +2421,10 @@ def configure(keymap):
             "C-Yen")  # [半角／全角] キー
         keymap_real_emacs["A-(25)"] = keymap.InputKeyCommand(
             "C-Yen")  # Alt-` キー
+
+    ####################################################################################################
+    ## IME custom.
+    ####################################################################################################
+    if 1:
+        keymap_global["S-HOME"] = keymap.InputKeyCommand("(28)")
+        keymap_global["S-END"] = keymap.InputKeyCommand("(29)")
