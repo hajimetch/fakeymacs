@@ -241,7 +241,7 @@ def configure(keymap):
     scroll_key = ["M-v", "C-v"]
 
     # 表示しているウィンドウの中で、一番最近までフォーカスがあったウィンドウに移動するキーを指定する
-    other_window_key = "A-o"
+    other_window_key = None  # "A-o"
 
     # クリップボードリストを起動するキーを指定する
     clipboardList_key = None  # "A-y"
